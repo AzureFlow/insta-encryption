@@ -9,8 +9,8 @@ const DEFAULT_ENCRYPTION_VERSION = 5;
 // https://www.instagram.com/api/v1/web/data/shared_data/
 // https://threads.com/api/v1/web/data/shared_data/
 //   encryption → public_key
-const ENCRYPTION_KEY_ID = "47";
-const ENCRYPTION_PUBLIC_KEY = "896a078ad1a39e5c09e07abe5496dcfe5ea20617513bca853b0baa67fdd3212e";
+const ENCRYPTION_KEY_ID = "62";
+const ENCRYPTION_PUBLIC_KEY = "b0fe1096bb66f81041f0df4a9baea6aab17d2fc550f4ee6631999b80b5e1a317";
 const ENCRYPTION_VERSION = "10";
 
 const PUBLIC_KEY_HEX_LENGTH = 64;
