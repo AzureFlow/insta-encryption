@@ -1,4 +1,3 @@
-// import util from "tweetnacl-util";
 import crypto from "crypto";
 import sealedbox from "tweetnacl-sealedbox-js";
 
@@ -44,14 +43,11 @@ export async function encryptPassword(password, prefix = DEFAULT_PWD_PREFIX) {
  */
 async function encryptPasswordInternal(encryptionKeyId, encryptionPublicKey, password, timestamp, encryptionVersion = DEFAULT_ENCRYPTION_VERSION, prefix = DEFAULT_PWD_PREFIX) {
 	const textEncoder = new TextEncoder();
-	// const passwordArr = util.decodeUTF8(password);
-	// const timestampArr = util.decodeUTF8(timestamp);
 	const passwordArr = textEncoder.encode(password);
 	const timestampArr = textEncoder.encode(timestamp);
 
 	const encryptedData = await encrypt(encryptionKeyId, encryptionPublicKey, passwordArr, timestampArr);
 
-	// return [prefix, encryptionVersion, timestamp, util.encodeBase64(encryptedData)].join(":");
 	return [prefix, encryptionVersion, timestamp, Buffer.from(encryptedData).toString("base64")].join(":");
 }
 
@@ -67,12 +63,12 @@ async function encrypt(encryptionKeyId, encryptionPublicKeyHex, data, additional
 		throw new Error("public key is not a valid hex string");
 	}
 
-	const decodedPublicKey = decodeHex(encryptionPublicKeyHex);
+	const decodedPublicKey = Buffer.from(encryptionPublicKeyHex, "hex");
 	if(!decodedPublicKey) {
 		throw new Error("public key is not a valid hex string");
 	}
 
-	let result = new Uint8Array(HEADER_LENGTH + data.length);
+	const result = new Uint8Array(HEADER_LENGTH + data.length);
 	let position = 0;
 
 	result[position] = FORMAT_VERSION;
@@ -95,13 +91,14 @@ async function encrypt(encryptionKeyId, encryptionPublicKeyHex, data, additional
 		// They used "tagLen" instead of "tagLength".
 		// I suggest using typechecking.
 		// Also, 16 is not a valid length. I assume they meant 128 bits, TAG_LENGTH * 8.
-		// tagLength: TAG_LENGTH,
+		// tagLen: TAG_LENGTH,
+		// tagLength: TAG_LENGTH * 8,
 	}, key, data.buffer);
 
 	const [exportedKey, encrypted] = await Promise.all([exportedKeyPromise, encryptedPromise]);
 
 	/** @type {Uint8Array} */
-	let sealedData = sealedbox.seal(new Uint8Array(exportedKey), decodedPublicKey);
+	const sealedData = sealedbox.seal(new Uint8Array(exportedKey), decodedPublicKey);
 
 	result[position] = sealedData.length & 255;
 	result[position + 1] = sealedData.length >> 8 & 255;
@@ -128,20 +125,4 @@ async function encrypt(encryptionKeyId, encryptionPublicKeyHex, data, additional
 	result.set(encryptedWithoutTag, position);
 
 	return result;
-}
-
-/**
- * @param {string} input
- * @returns {Uint8Array}
- */
-function decodeHex(input) {
-	return Buffer.from(input, "hex");
-
-	// /** @type {number[]} */
-	// const result = [];
-	// for(let i = 0; i < input.length; i += 2) {
-	//     result.push(parseInt(input.slice(i, i + 2), 16));
-	// }
-
-	// return new Uint8Array(result);
 }

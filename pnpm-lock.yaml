@@ -11,9 +11,6 @@ importers:
       tweetnacl-sealedbox-js:
         specifier: ^1.2.0
         version: 1.2.0
-      tweetnacl-util:
-        specifier: ^0.15.1
-        version: 0.15.1
 
 packages:
 
@@ -22,9 +19,6 @@ packages:
 
   tweetnacl-sealedbox-js@1.2.0:
     resolution: {integrity: sha512-QoCr8K2hwri+ky7SUa22oSre8g88XaWi0hwwWd16pJMuDyn5gL/UyE0PyR2EOFEMJ70T2trJ9+Sv+Qa18olEmQ==}
-
-  tweetnacl-util@0.15.1:
-    resolution: {integrity: sha512-RKJBIj8lySrShN4w6i/BonWp2Z/uxwC3h4y7xsRrpP59ZboCd0GpEVsOnMDYLMmKBpYhb5TgHzZXy7wTfYFBRw==}
 
   tweetnacl@1.0.3:
     resolution: {integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==}
@@ -37,7 +31,5 @@ snapshots:
     dependencies:
       blakejs: 1.2.1
       tweetnacl: 1.0.3
-
-  tweetnacl-util@0.15.1: {}
 
   tweetnacl@1.0.3: {}

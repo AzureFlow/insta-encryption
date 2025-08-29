@@ -1,14 +1,13 @@
 {
 	"name": "insta_encryption",
 	"version": "0.0.1",
-	"description": "",
+	"description": "Instagram encryption",
 	"keywords": [],
 	"license": "MIT",
 	"author": "AzureFlow",
 	"type": "module",
 	"main": "src/encrypt.js",
 	"dependencies": {
-		"tweetnacl-sealedbox-js": "^1.2.0",
-		"tweetnacl-util": "^0.15.1"
+		"tweetnacl-sealedbox-js": "^1.2.0"
 	}
 }
