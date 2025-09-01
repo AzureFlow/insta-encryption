@@ -9,9 +9,6 @@ const DEFAULT_ENCRYPTION_VERSION = 5;
 // https://www.instagram.com/api/v1/web/data/shared_data/
 // https://threads.com/api/v1/web/data/shared_data/
 //   encryption → public_key
-const ENCRYPTION_KEY_ID = "62";
-const ENCRYPTION_PUBLIC_KEY = "b0fe1096bb66f81041f0df4a9baea6aab17d2fc550f4ee6631999b80b5e1a317";
-const ENCRYPTION_VERSION = "10";
 
 const PUBLIC_KEY_HEX_LENGTH = 64;
 const FORMAT_VERSION = 1;
@@ -23,13 +20,16 @@ const TAG_LENGTH = 16;
 const HEADER_LENGTH = VERSION_FIELD_LENGTH + KEY_ID_FIELD_LENGTH + ENCRYPTED_KEY_LENGTH_FIELD + KEY_LENGTH_BYTES + sealedbox.overheadLength + TAG_LENGTH;
 
 /**
- * @param {string} password
- * @param {string} [prefix]
- * @returns {Promise<string>}
+ * @param {string} password Password to encrypt.
+ * @param {string} encryptionKeyId Obtain from `shared_data`.
+ * @param {string} encryptionPublicKey Obtain from `shared_data`.
+ * @param {string} encryptionVersion Obtain from `shared_data`.
+ * @param {string} [prefix] Prefix to use. Default: `#PWD_BROWSER`.
+ * @returns {Promise<string>} Encrypted password.
  */
-export async function encryptPassword(password, prefix = DEFAULT_PWD_PREFIX) {
+export async function encryptPassword(password, encryptionKeyId, encryptionPublicKey, encryptionVersion = "10", prefix = DEFAULT_PWD_PREFIX) {
 	const timestamp = Math.floor(Date.now() / 1000).toString();
-	return encryptPasswordInternal(parseInt(ENCRYPTION_KEY_ID, 10), ENCRYPTION_PUBLIC_KEY, password, timestamp, parseInt(ENCRYPTION_VERSION, 10), prefix);
+	return encryptPasswordInternal(parseInt(encryptionKeyId, 10), encryptionPublicKey, password, timestamp, parseInt(encryptionVersion, 10), prefix);
 }
 
 /**
